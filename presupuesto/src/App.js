@@ -1,61 +1,34 @@
-import React, {useState} from 'react';
-import Pregunta from "./components/Pregunta";
-import Formulario from "./components/Formulario";
-import Listado from "./components/Listado";
-import ControlPresupuesto from "./components/Listado";
-
+import React, { useState } from "react";
+import Pregunta from "./components/Pregunta.js";
+import Formulario from "./components/Formulario.js";
 
 function App() {
-
-  //definir el state
-  const [presupuesto,guardarPresupuesto] = useState(0);
-  const [restante,guardarRestante] = useState(0);
-  const [ mostrarpregunta, actualizarPregunta] = useState(true);
-  const [gastos, guardarGastos] = useState([]);
-
-  // Funcion que se ejecuta al agregar un nuevo gasto
-  const agregarNuevoGasto = gasto => {
-    guardarGastos([
-      ...gastos,
-      gasto 
-    ]);
-  }
+  //Definir State
+  const [presupuesto, guardarPresupuesto] = useState(0);
+  const [restante, guardarRestante] = useState(0);
+  const [mostrarpregunta, actualizarPregunta] = useState(true);
 
   return (
     <div className="container">
       <header>
         <h1>Gasto Semanal</h1>
 
-       
         <div className="contenido-principal contenido">
-          { mostrarpregunta ? (
+          {mostrarpregunta ? (
             <Pregunta
               guardarPresupuesto={guardarPresupuesto}
-              guardarRestante={guardarRestante}     
+              guardarRestante={guardarRestante}
               actualizarPregunta={actualizarPregunta}
             />
-            )    :  (
-              <div className="row">
+          ) : (
+            <div className="row">
               <div className="one-half column">
-                <Formulario 
-                  agregarNuevoGasto={agregarNuevoGasto}
-                />
+                <Formulario />
               </div>
-              <div className="listado one-half column">
-                <Listado
-                  gastos={gastos}
-                />
-
-                <ControlPresupuesto
-                  presupuesto={presupuesto}
-                  restante={restante}
-                />
-              </div>
-          </div>
-            ) 
-             }
-                    
-        </div>    
+              <div className="one-half column">2</div>
+            </div>
+          )}
+        </div>
       </header>
     </div>
   );

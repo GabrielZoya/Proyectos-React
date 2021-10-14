@@ -1,67 +1,58 @@
-import React, {Fragment, useState } from "react";
-import Error from "./Error.js"
+import React, { Fragment, useState } from "react";
+import Error from "./Error.js";
 
+const Pregunta = ({
+  guardarPresupuesto,
+  guardarRestante,
+  actualizarPregunta,
+}) => {
+  //Definir State
+  const [cantidad, guardarCantidad] = useState(0);
+  const [error, guardarError] = useState(false);
 
+  //Función para leer el presupuesto
+  const definirPresupuesto = (e) => {
+    guardarCantidad(parseInt(e.target.value, 10));
+  };
 
-const Pregunta = ({guardarPresupuesto, guardarRestante, actualizarPregunta}) => {
+  //submit para definir el presupuesto
+  const agregarPresupuesto = (e) => {
+    e.preventDefault();
 
-    // Definir el state
-    const [cantidad, guardarCantidad] = useState(0);
-    const [error, guardarError] = useState(false);
-
-
-    //funcion que lee el presupuesto
-    const definirPresupuesto = e => {
-        guardarCantidad(parseInt(e.target.value, 10));   
+    //validar
+    if (cantidad < 1 || isNaN(cantidad)) {
+      guardarError(true);
+      return;
     }
 
-    //submit para definir el presupuesto
-    const agregarPresupuesto = e => {
-        e.preventDefault();
+    //al pasar validacion
+    guardarError(false);
+    guardarPresupuesto(cantidad);
+    guardarRestante(cantidad);
+    actualizarPregunta(false);
+  };
 
-        //validar
-        if(cantidad<1 || isNaN(cantidad)){
-            guardarError(true);
-            return;
-        }
+  return (
+    <Fragment>
+      <h2>Coloca tu presupuesto</h2>
+      {error ? <Error mensaje="El presupuesto es Incorrecto" /> : null}
 
+      <form onSubmit={agregarPresupuesto}>
+        <input
+          type="number"
+          className="u-full-width"
+          placeholder="Colocar presupuesto inicial"
+          onChange={definirPresupuesto}
+        />
 
-        //Si se pasa la validación
-        guardarError(false);
-        guardarPresupuesto(cantidad);
-        guardarRestante(cantidad);
-        actualizarPregunta(false);
-    }
+        <input
+          type="submit"
+          className="button-primary u-full-width"
+          value="Definir presupuesto"
+        />
+      </form>
+    </Fragment>
+  );
+};
 
-
-
-    return ( 
-        <Fragment>
-            <h2>Indica tu presupuesto</h2>
-
-            { error ? <Error mensaje="El presupuesto es Incorrecto" />  : null }
-
-            <form
-                onSubmit={agregarPresupuesto}
-            >
-                <input
-                    type="number"
-                    className="u-full-width"
-                    placeholder="Indica tu presupuesto"
-                    onChange={definirPresupuesto}
-                />
-
-                <input
-                    type="submit"
-                    className="button-primary u-full-width"
-                    value="Definir presupuesto"
-                />
-            </form>
-
-
-        </Fragment>
-
-     );
-}
- 
 export default Pregunta;
